@@ -1,6 +1,8 @@
 package com.product.warehouse.repository;
 
 import com.product.warehouse.entity.ProductEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,7 +29,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
     // List<ProductEntity> findByTitleAndPrice(String title, BigDecimal price);
 
-    List<ProductEntity> findByTitleContainingIgnoreCase(String title);
+    Page<ProductEntity> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 
     @Query("select e.title , e.price from ProductEntity e where e.title=:title and e.price=:price")
     Optional<ProductEntity> findByTitleAndPrice(String title, BigDecimal price);

@@ -24,8 +24,14 @@ public class ProductController {
     private final int PAGE_SIZE = 5;
 
     @GetMapping
-    public Page<ProductEntity> getAllProducts(@RequestParam(defaultValue = "id") String sortBy,
-                                              @RequestParam(defaultValue = "0") Integer pageNumber) {
+    public Page<ProductEntity> getAllProducts(
+            @RequestParam(defaultValue = "") String title
+            ,@RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") Integer pageNumber) {
+
+
+
+
 
 
 //        return productRepository.findAll();
@@ -39,8 +45,17 @@ public class ProductController {
 
 //        Pageable pageable = PageRequest.of(pageNumber, Size, Sort.by("lastName").ascending());
 
-        Pageable pageable = PageRequest.of(pageNumber, PAGE_SIZE);
-        return productRepository.findAll(pageable);
+//        Pageable pageable = PageRequest.of(
+//                pageNumber,
+//                PAGE_SIZE,
+//                Sort.by(sortBy));
+//        return productRepository.findAll(pageable);
+
+
+        return productRepository.findByTitleContainingIgnoreCase(
+                title,
+                PageRequest.of(pageNumber, PAGE_SIZE, Sort.by(sortBy))
+        );
 
     }
 
