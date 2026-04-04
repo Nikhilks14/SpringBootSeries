@@ -9,6 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @ToString
 @Getter
@@ -28,8 +30,13 @@ public class Patient {
     @Enumerated(EnumType.STRING)
     private BloodGroupType bloodGroup;
 
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @OneToOne
+    @JoinColumn(name = "patientInsurence", unique = true)
+    private Insurance insurance; // Owning side
+
+    @OneToMany(mappedBy = "patient")
+    private Set<Appointment> appointments = new HashSet<>();
 }
