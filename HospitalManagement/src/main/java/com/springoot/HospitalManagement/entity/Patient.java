@@ -2,9 +2,7 @@ package com.springoot.HospitalManagement.entity;
 
 import com.springoot.HospitalManagement.entity.type.BloodGroupType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
@@ -16,6 +14,9 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Patient {
 
     @Id
@@ -33,10 +34,10 @@ public class Patient {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "patientInsurence", unique = true)
     private Insurance insurance; // Owning side
 
-    @OneToMany(mappedBy = "patient")
+    @OneToMany(mappedBy = "patient",  cascade = CascadeType.ALL)
     private Set<Appointment> appointments = new HashSet<>();
 }
