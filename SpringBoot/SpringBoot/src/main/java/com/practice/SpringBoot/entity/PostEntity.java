@@ -2,8 +2,8 @@ package com.practice.SpringBoot.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
+//import org.hibernate.envers.Audited;
+//import org.hibernate.envers.NotAudited;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,7 +11,7 @@ import org.hibernate.envers.NotAudited;
 @Entity
 @Getter
 @Setter
-@Audited
+//@Audited
 public class PostEntity extends AuditableEntity{
 
     @Id
@@ -19,7 +19,7 @@ public class PostEntity extends AuditableEntity{
     private Long id;
     private String title;
 
-    @NotAudited
+//    @NotAudited
     private String description;
 
     @PrePersist

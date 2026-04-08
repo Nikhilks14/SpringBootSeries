@@ -6,6 +6,12 @@ Module 4
 2
 3. Auditing
 4. Making Third party API calls with RestClient
+
+    - Restclient - get,post put, patch , delete
+    - Handling Error in RestClient
 5. Logging in spring boot Application
 6. spring boot Actuator
 7. OpenAPI and Swagger to Generate the API
+
+http://localhost:8080/v3/api-docs
+http://localhost:8080/swagger-ui/index.html
