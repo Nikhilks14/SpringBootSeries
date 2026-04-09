@@ -15,3 +15,14 @@ Module 4
 
 http://localhost:8080/v3/api-docs
 http://localhost:8080/swagger-ui/index.html
+
+
+Module 5
+
+4. Spring scurity web config- SecurityFilterChain Configuration
+- In webSecurityConfig -> SecurityFilterChain Bean is created
+- sessionManagement
+-csrf
+.authorizedHttpRequest( ()-> auth. .requestMatchers().anyRequest().authenticated())
+
+
