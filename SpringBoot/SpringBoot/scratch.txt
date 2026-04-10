@@ -25,4 +25,14 @@ Module 5
 -csrf
 .authorizedHttpRequest( ()-> auth. .requestMatchers().anyRequest().authenticated())
 
+5 Understanding JWT,Creation and Verification of JWT Token
+- why use JWT
+
+Check what is RSA
+- JWTServe (contains generate jwt token , and verify jwt token)
+
+6 SingUp and Login using JWT
+7 Authenticating Requests using JWT
+8 Spring Security Exception Handling
+
 
