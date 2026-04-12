@@ -27,7 +27,7 @@ public class PostController {
 
     @GetMapping("/{id}")
     public PostDto getPostById(@PathVariable long id) {
-
+        System.out.println("API called");
         return postService.getPostById(id);
     }
 

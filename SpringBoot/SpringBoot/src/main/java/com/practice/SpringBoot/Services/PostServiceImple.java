@@ -2,15 +2,19 @@ package com.practice.SpringBoot.Services;
 
 import com.practice.SpringBoot.Dto.PostDto;
 import com.practice.SpringBoot.entity.PostEntity;
+import com.practice.SpringBoot.entity.User;
 import com.practice.SpringBoot.exception.ResourceNotFoundException;
 import com.practice.SpringBoot.reposistory.PostRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostServiceImple implements PostService {
@@ -35,9 +39,16 @@ public class PostServiceImple implements PostService {
     }
 
     @Override
-    public PostDto getPostById(long id) {
-        PostEntity postEntity = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("resource not found with id " + id));
+    public PostDto getPostById(long postid) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        log.info("user: {}", user);
+
+        PostEntity postEntity = postRepository.findById(postid)
+                .orElseThrow(() -> {
+                    System.out.println("Exception triggered");
+                    return new ResourceNotFoundException("resource not found with {} " + postid);
+                });
         return modelMapper.map( postEntity, PostDto.class);
     }
 

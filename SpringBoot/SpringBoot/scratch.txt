@@ -32,7 +32,12 @@ Check what is RSA
 - JWTServe (contains generate jwt token , and verify jwt token)
 
 6 SingUp and Login using JWT
+- AuthenticationManager
+- Cookie
+
 7 Authenticating Requests using JWT
+-SecurityContextHolder
+-OncePerRequestFilter
 8 Spring Security Exception Handling
 
 

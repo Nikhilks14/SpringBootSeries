@@ -1,5 +1,7 @@
 package com.practice.SpringBoot.config;
 
+import com.practice.SpringBoot.Filter.JwtAuthFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,11 +18,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig {
+
+    private final JwtAuthFilter  jwtAuthFilter;
 
     @Bean
     DefaultSecurityFilterChain securityWebFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -32,13 +38,14 @@ public class WebSecurityConfig {
                                 .requestMatchers("/v3/api-docs/**",
                                         "/swagger-ui/**",
                                         "/swagger-ui.html").permitAll()
-                                .requestMatchers("/posts" , "/auth/**").permitAll()
-                                .requestMatchers("/posts/**").hasAnyRole("ADMIN")
+                                .requestMatchers("/posts/**" , "/auth/**").permitAll()
+//                                .requestMatchers("/posts/**").hasAnyRole("ADMIN")
                                 .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // create(always create) and use the session (use condition based)
-                .formLogin(Customizer.withDefaults()) ; // Opens Default login page
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+//                .formLogin(Customizer.withDefaults()) ; // Opens Default login page
 //                .formLogin(formLoginConfig -> formLoginConfig.loginPage("/login.html")) // custom form login page , html page inside static
 
         return httpSecurity.build();
@@ -68,8 +75,5 @@ public class WebSecurityConfig {
 //        return new InMemoryUserDetailsManager(user1, user2);
 //    }
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+
 }
