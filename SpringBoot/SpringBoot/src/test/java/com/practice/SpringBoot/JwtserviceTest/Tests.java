@@ -17,7 +17,7 @@ public class Tests {
     void contextLoads() {
         User user = new User(4L,"Nikhil","nikhil@gmail.com", "1234");
 
-        String token = jwtService.generateToken(user);
+        String token = jwtService.generateAcessToken(user);
 
         System.out.println(token);
 
