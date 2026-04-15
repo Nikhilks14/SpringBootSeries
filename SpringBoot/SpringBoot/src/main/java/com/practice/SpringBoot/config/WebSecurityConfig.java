@@ -1,6 +1,7 @@
 package com.practice.SpringBoot.config;
 
 import com.practice.SpringBoot.Filter.JwtAuthFilter;
+import com.practice.SpringBoot.handler.Oauth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,24 +28,28 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 public class WebSecurityConfig {
 
     private final JwtAuthFilter  jwtAuthFilter;
+    private final Oauth2SuccessHandler  oauth2SuccessHandler;
 
     @Bean
     DefaultSecurityFilterChain securityWebFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity
 //                .formLogin(form -> form.permitAll()) // permit all
-                .authorizeHttpRequests(auth ->
-                        auth
+                .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/v3/api-docs/**",
                                         "/swagger-ui/**",
                                         "/swagger-ui.html").permitAll()
-                                .requestMatchers("/posts/**" , "/auth/**").permitAll()
+                                .requestMatchers("/posts/**" , "/auth/**", "/home.html").permitAll()
 //                                .requestMatchers("/posts/**").hasAnyRole("ADMIN")
                                 .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // create(always create) and use the session (use condition based)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login(oauth2Config -> oauth2Config
+                        .failureUrl("/login?error=true")
+                        .successHandler(oauth2SuccessHandler));
+
 //                .formLogin(Customizer.withDefaults()) ; // Opens Default login page
 //                .formLogin(formLoginConfig -> formLoginConfig.loginPage("/login.html")) // custom form login page , html page inside static
 
