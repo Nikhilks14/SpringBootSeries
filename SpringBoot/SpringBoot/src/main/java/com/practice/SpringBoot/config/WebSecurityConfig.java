@@ -48,6 +48,7 @@ public class WebSecurityConfig {
 //                .formLogin(form -> form.permitAll()) // permit all
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers(publicRoutes).permitAll()
+                                .requestMatchers(HttpMethod.GET, "/posts").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/posts/**").hasAnyRole(ADMIN.name(), CREATOR.name())
                                 .anyRequest().authenticated())
