@@ -4,10 +4,3 @@ spring:
       client:
         registration:
           google:
-
-          github:
-            client-id: knskdnfksanfk
-            client-secret: ksanknaslknmlkfas
-          facebook:
-            client-id: knskdnfksanfk
-            client-secret: ksanknaslknmlkfas
