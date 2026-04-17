@@ -1,5 +1,6 @@
 package com.practice.SpringBoot.entity;
 
+import com.practice.SpringBoot.Utils.PermissionMapping;
 import com.practice.SpringBoot.entity.enums.Permission;
 import com.practice.SpringBoot.entity.enums.Role;
 import jakarta.persistence.*;
@@ -10,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,20 +42,30 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    private Set<Permission> permissions;
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @Enumerated(EnumType.STRING)
+//    private Set<Permission> permissions;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {  // Authority is like to level umbrella , which have two things roles and permission
 
-        Set<SimpleGrantedAuthority> authorities = roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_"+role.name()))
-                .collect(Collectors.toSet());
+//        Set<SimpleGrantedAuthority> authorities = roles.stream()
+//                .map(role -> new SimpleGrantedAuthority("ROLE_"+role.name()))
+//                .collect(Collectors.toSet());
 
-        permissions.forEach(
-                permission -> authorities.add(new SimpleGrantedAuthority(permission.name()))
+//        permissions.forEach(
+//                permission -> authorities.add(new SimpleGrantedAuthority(permission.name()))
+//        );
+
+        Set<SimpleGrantedAuthority>  authorities = new HashSet<>();
+        roles.forEach(
+                role -> {
+                    Set<SimpleGrantedAuthority> permission = PermissionMapping.getAuthoritiesForRole(role);
+                    authorities.addAll(permission);
+                    authorities.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
+                }
         );
+
 
         return authorities;
     }

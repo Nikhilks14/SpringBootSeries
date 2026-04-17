@@ -17,7 +17,7 @@ public class PermissionMapping {
     private static Map<Role , Set<Permission>> map = Map.of(
             USER , Set.of(USER_VIEW, POST_VIEW),
             CREATOR,  Set.of(USER_VIEW,USER_UPDATE,POST_VIEW, POST_CREATE, POST_UPDATE),
-            ADMIN , Set.of(POST_CREATE, USER_UPDATE, POST_UPDATE, USER_DELETE POST_VIEW, POST_DELETE)
+            ADMIN , Set.of(POST_CREATE, USER_UPDATE, POST_UPDATE, USER_DELETE,POST_VIEW, POST_DELETE)
     );
 
     public static Set<SimpleGrantedAuthority> getAuthoritiesForRole(Role role) {
