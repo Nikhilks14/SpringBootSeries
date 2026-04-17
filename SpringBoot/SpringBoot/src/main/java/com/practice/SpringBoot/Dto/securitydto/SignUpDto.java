@@ -1,5 +1,6 @@
 package com.practice.SpringBoot.Dto.securitydto;
 
+import com.practice.SpringBoot.entity.enums.Permission;
 import com.practice.SpringBoot.entity.enums.Role;
 import lombok.Data;
 
@@ -12,4 +13,5 @@ public class SignUpDto {
     private String email;
     private String password;
     private Set<Role> roles; // Not recommended for testing
+    private Set<Permission> permissions;
 }

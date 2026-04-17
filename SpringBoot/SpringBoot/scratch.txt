@@ -41,3 +41,5 @@ Check what is RSA
 8 Spring Security Exception Handling
 
 
+Granular Authorization with Authorities and Permission in Spring Security
+Role Vs Authority

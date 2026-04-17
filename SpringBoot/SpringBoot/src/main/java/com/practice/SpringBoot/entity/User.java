@@ -1,5 +1,6 @@
 package com.practice.SpringBoot.entity;
 
+import com.practice.SpringBoot.entity.enums.Permission;
 import com.practice.SpringBoot.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -39,12 +40,22 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Permission> permissions;
 
-        return roles.stream()
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {  // Authority is like to level umbrella , which have two things roles and permission
+
+        Set<SimpleGrantedAuthority> authorities = roles.stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_"+role.name()))
                 .collect(Collectors.toSet());
+
+        permissions.forEach(
+                permission -> authorities.add(new SimpleGrantedAuthority(permission.name()))
+        );
+
+        return authorities;
     }
 
     @Override
