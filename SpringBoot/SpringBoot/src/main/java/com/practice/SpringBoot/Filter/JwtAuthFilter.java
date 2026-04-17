@@ -42,7 +42,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 //        String token = requestTokenHeader.split("Bearer ")[1];
             String token = requestTokenHeader.substring(7);
-            ;
+
             Long userId = jwtService.getUserIdFromToken(token);
 
             if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -50,7 +50,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 // Now we authenticate it by using UsernamePasswordAuthenticationToke
 
                 UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(user, null, null);
+                        new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
                 // Store the system details like ip , etc
                 authentication.setDetails(

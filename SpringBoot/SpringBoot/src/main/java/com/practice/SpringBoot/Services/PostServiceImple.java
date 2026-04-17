@@ -40,9 +40,9 @@ public class PostServiceImple implements PostService {
 
     @Override
     public PostDto getPostById(long postid) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        log.info("user: {}", user);
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//
+//        log.info("user: {}", user);
 
         PostEntity postEntity = postRepository.findById(postid)
                 .orElseThrow(() -> {

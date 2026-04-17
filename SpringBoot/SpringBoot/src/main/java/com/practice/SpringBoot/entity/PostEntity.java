@@ -7,9 +7,9 @@ import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Table(name = "post")
 @Entity
-@Getter
 @Setter
 //@Audited
 public class PostEntity extends AuditableEntity{

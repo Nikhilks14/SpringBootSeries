@@ -1,9 +1,6 @@
 package com.practice.SpringBoot.controller;
 
-import com.practice.SpringBoot.Dto.securitydto.LoginDto;
-import com.practice.SpringBoot.Dto.securitydto.LoginResponseDto;
-import com.practice.SpringBoot.Dto.securitydto.SignUpDto;
-import com.practice.SpringBoot.Dto.securitydto.UserDto;
+import com.practice.SpringBoot.Dto.securitydto.*;
 import com.practice.SpringBoot.Services.AuthService;
 import com.practice.SpringBoot.Services.UserService;
 import jakarta.servlet.http.Cookie;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
+import java.util.Map;
 
 
 @RestController
@@ -51,15 +49,34 @@ public class AuthController {
         return ResponseEntity.ok(loginResponseDto);
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<LoginResponseDto> refresh(HttpServletRequest request) {
-        String refreshToken = Arrays.stream(request.getCookies())
-                .filter(cookie -> "refreshToken".equals(cookie.getName()))
-                .findFirst()
-                .map(Cookie::getValue)
-                .orElseThrow(()-> new AuthenticationServiceException("Refresh token not found inside the Cookies"));
+//    @PostMapping("/refresh")
+//    public ResponseEntity<LoginResponseDto> refresh(HttpServletRequest request) {
+//        String refreshToken = Arrays.stream(request.getCookies())
+//                .filter(cookie -> "refreshToken".equals(cookie.getName()))
+//                .findFirst()
+//                .map(Cookie::getValue)
+//                .orElseThrow(()-> new AuthenticationServiceException("Refresh token not found inside the Cookies"));
+//
+//        LoginResponseDto loginResponseDto = authService.refreshToken(refreshToken);
+//        return ResponseEntity.ok(loginResponseDto);
+//    }
 
-        LoginResponseDto loginResponseDto = authService.refreshToken(refreshToken);
-        return ResponseEntity.ok(loginResponseDto);
+    @PostMapping("/refresh")
+    public ResponseEntity<Map<String,String >> refresh(HttpServletRequest request,
+                                                       HttpServletResponse response) {
+
+        String oldRefreshToken = authService.extractRefreshTokenFromCookie(request);
+       TokenPairDto tokens = authService.refreshToken(oldRefreshToken);
+
+       Cookie cookie = new Cookie("refreshToken", tokens.getRefreshToken());
+       cookie.setHttpOnly(true);
+       cookie.setSecure("production".equals(deployEnv));
+       cookie.setMaxAge(1000 * 60 * 60 * 60);
+//       cookie.setMaxAge(1000 * 20 );
+       response.addCookie(cookie);
+
+       return ResponseEntity.ok(Map.of("accessToken",  tokens.getAccessToken() ));
+
+
     }
 }

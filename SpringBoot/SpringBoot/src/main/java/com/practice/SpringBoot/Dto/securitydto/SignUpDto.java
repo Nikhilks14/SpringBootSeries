@@ -1,6 +1,9 @@
 package com.practice.SpringBoot.Dto.securitydto;
 
+import com.practice.SpringBoot.entity.enums.Role;
 import lombok.Data;
+
+import java.util.Set;
 
 @Data
 public class SignUpDto {
@@ -8,4 +11,5 @@ public class SignUpDto {
     private String name;
     private String email;
     private String password;
+    private Set<Role> roles; // Not recommended for testing
 }

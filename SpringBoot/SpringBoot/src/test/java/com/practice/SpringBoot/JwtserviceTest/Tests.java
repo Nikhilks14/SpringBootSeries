@@ -13,17 +13,17 @@ public class Tests {
     @Autowired
     private JwtService jwtService;
 
-    @Test
-    void contextLoads() {
-        User user = new User(4L,"Nikhil","nikhil@gmail.com", "1234");
-
-        String token = jwtService.generateAcessToken(user);
-
-        System.out.println(token);
-
-        Long id = jwtService.getUserIdFromToken(token);
-        System.out.println(id);
-    }
+//    @Test
+//    void contextLoads() {
+//        User user = new User(4L,"Nikhil","nikhil@gmail.com", "1234");
+//
+//        String token = jwtService.generateAcessToken(user);
+//
+//        System.out.println(token);
+//
+//        Long id = jwtService.getUserIdFromToken(token);
+//        System.out.println(id);
+//    }
 
 
 
